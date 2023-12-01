@@ -1,9 +1,18 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
-# Create your views here.
+from django.shortcuts import render, redirect
+from .forms import MessagesForm
+from .models import Messages
 
 def chat(request):
-    template = loader.get_template('chatLayout.html')
-
-    return HttpResponse(template.render())
+    context ={}
+ 
+    # create object of form
+    form = MessagesForm(request.POST or None, request.FILES or None)
+     
+    # check if form data is valid
+    if form.is_valid():
+        # save the form data to model
+        form.save()
+ 
+    context['form']= form
+    context['data'] = Messages.objects.all()
+    return render(request, "chatLayout.html", context)
