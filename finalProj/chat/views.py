@@ -1,5 +1,6 @@
 import secrets
 
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .forms import MessagesForm
 from .models import Messages
@@ -8,6 +9,10 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 from base64 import b64encode, b64decode
+
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
 
 
 def chat(request):
@@ -24,6 +29,31 @@ def chat(request):
     context['form'] = form
     context['data'] = Messages.objects.all()
     return render(request, "chatLayout.html", context)
+
+
+def register_view(request):
+    # This function renders the registration form page and create a new user based on the form data
+    if request.method == 'POST':
+        # We use Django's UserCreationForm which is a model created by Django to create a new user.
+        # UserCreationForm has three fields by default: username (from the user model), password1, and password2.
+        form = UserCreationForm(request.POST)
+        # check whether it's valid: for example it verifies that password1 and password2 match
+        if form.is_valid():
+            form.save()
+            # redirect the user to login page so that after registration the user can enter the credentials
+            return redirect('login')
+    else:
+        # Create an empty instance of Django's UserCreationForm to generate the necessary html on the template.
+        form = UserCreationForm()
+    # return render(request, 'accounts/register.html', {'form': form})
+    return render(request, 'register.html', {'form': form})
+
+
+def logout_view(request):
+    # Log out user
+    logout(request)
+    # Redirect to index with user logged out
+    return redirect('index')
 
 
 def ssl_trigger(request):
