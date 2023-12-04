@@ -29,3 +29,4 @@ torch_geometric==2.4.0
 tqdm==4.66.1
 tzdata==2023.3
 urllib3==2.1.0
+cryptography~=41.0.7
