@@ -31,7 +31,7 @@ def login_view(request):
             form = AuthenticationForm()
             return render(request, 'home.html')
 
-    return render(request, 'logInPage.html')
+    return render(request, 'login.html')
 
 
 def chat(request):

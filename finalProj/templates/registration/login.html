@@ -1,7 +1,0 @@
-{% extends "base.html "%}
-<h2>Log in</h2>
-<form action="{% url 'login' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">login</button>
-</form>
