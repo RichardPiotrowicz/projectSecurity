@@ -1,7 +1,9 @@
-<!DOCTYPE html>
-<html>
-<body>
-    <h1>hello</h1>
-    <p>welcome</p>
-</body>
-</html>
+<form action = "" method = "post"> 
+    {% csrf_token %} 
+    {{form }} 
+    <input type="submit" value="Submit"> 
+</form> 
+
+{% for i in data %}
+    {{ i.message }}
+{% endfor %}
