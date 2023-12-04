@@ -12,26 +12,38 @@ from cryptography.hazmat.primitives import padding
 from base64 import b64encode, b64decode
 
 
-# Jahmaro Gordon
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('Username')
-        password = request.POST.get('Password')
-
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            # User was authenticated
-            # redirect to the index page upon successful login
-
-            # login in the user
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            # get the user info from the form data and log in the user
+            user = form.get_user()
             login(request, user)
-            return redirect('chatLayout')
-        else:
-            # User was not authenticated
-            form = AuthenticationForm()
-            return render(request, 'home.html')
+            return redirect('home')
+    else:
+        form = AuthenticationForm()
+        return render(request, 'login.html', {'form': form})
 
-    return render(request, 'login.html')
+# Jahmaro Gordon
+# def login_view(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('Username')
+#         password = request.POST.get('Password')
+#
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             # User was authenticated
+#             # redirect to the index page upon successful login
+#
+#             # login in the user
+#             login(request, user)
+#             return redirect('chatLayout')
+#         else:
+#             # User was not authenticated
+#             form = AuthenticationForm()
+#             return render(request, 'home.html')
+#
+#     return render(request, 'login.html')
 
 
 def chat(request):
